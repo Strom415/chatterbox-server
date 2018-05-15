@@ -72,6 +72,28 @@ describe('server', function() {
       done();
     });
   });
+  
+  it('Should pass a roomname property if specified', function(done) {
+    var requestParams = {method: 'POST',
+      uri: 'http://127.0.0.1:3000/classes/messages',
+      json: {
+        username: 'Jono',
+        text: 'Do my bidding!',
+        roomname: 'champagne room'
+      }
+    };
+
+    request(requestParams, function(error, response, body) {
+      // Now if we request the log, that message we posted should be there:
+      request('http://127.0.0.1:3000/classes/messages', function(error, response, body) {
+        var messages = JSON.parse(body).results;
+        expect(messages[messages.length - 1].username).to.equal('Jono');
+        expect(messages[messages.length - 1].text).to.equal('Do my bidding!');
+        expect(messages[messages.length - 1].roomname).to.equal('champagne room');
+        done();
+      });
+    });
+  });
 
 
 });

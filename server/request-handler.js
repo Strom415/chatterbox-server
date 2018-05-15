@@ -58,20 +58,22 @@ var requestHandler = function(request, response) {
     request.on('data', (data) => {
       
       results.push(JSON.parse(data));
-      console.log(results);
       
     }).on('end', () => {
       response.writeHead(statusCode, headers);
       var responseBody = {'results': results};
       response.end(JSON.stringify(responseBody));
     });
+  } else if (request.method === 'OPTIONS') {
+    var statusCode = 200;
+    response.writeHead(statusCode, headers);
+    response.end(JSON.stringify(responseBody));
   } else {
     statusCode = 404;
     response.writeHead(statusCode, headers);
     response.end(JSON.stringify(responseBody));
   }
   // Tell the client we are sending them plain text.
-  console.log(results);
   // You will need to change this if you are sending something
   // other than plain text, like JSON or HTML.
   

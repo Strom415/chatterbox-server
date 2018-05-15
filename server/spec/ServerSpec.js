@@ -116,4 +116,21 @@ describe('Node Server Request Listener Function', function() {
       });
   });
 
+  it('Should pass a roomname property if specified', function() {
+    var stubMsg = {
+      username: 'Barnaby',
+      text: 'Lets party!',
+      roomname: 'champagne room'
+    };
+    
+    var req = new stubs.request('/classes/messages', 'POST', stubMsg);
+    var res = new stubs.response();
+
+    handler.requestHandler(req, res);
+
+    var messages = JSON.parse(res._data).results;
+
+    expect(messages[messages.length - 1].roomname).to.equal('champagne room');
+  });
+
 });
